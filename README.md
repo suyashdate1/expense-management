@@ -222,6 +222,16 @@ Testing includes:
 * Expense deletion
 * Cross-user expense access protection
 
+### Login & JWT Authentication
+
+![Login API](screenshots/postman_login_redacted.png)
+
+### Expense API
+
+![Get Expenses API](screenshots/postman_expenses_redacted_1.png)
+
+![Expense Response](screenshots/postman_expenses_redacted_2.png)
+
 ## ⚙️ Environment Variables
 
 The application uses environment variables for sensitive configuration.
