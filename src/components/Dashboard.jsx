@@ -28,6 +28,14 @@ function Dashboard({ onViewAll }) {
   const [formMessage, setFormMessage] = useState("");
   const [formMessageType, setFormMessageType] = useState("");
 
+  // =========================
+  // Monthly Budget
+  // =========================
+
+  const [monthlyBudget, setMonthlyBudget] = useState(10000);
+  const [budgetInput, setBudgetInput] = useState(10000);
+  const [showBudgetInput, setShowBudgetInput] = useState(false);
+
   const emptyForm = {
     title: "",
     amount: "",
@@ -142,8 +150,39 @@ function Dashboard({ onViewAll }) {
     }
   };
 
+  // =========================
+  // Fetch Budget
+  // =========================
+
+  const fetchBudget = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        "http://localhost:8081/api/budget",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const amount = Number(response.data.amount);
+
+      setMonthlyBudget(amount);
+      setBudgetInput(amount);
+    } catch (error) {
+      console.error("Unable to load budget:", error);
+    }
+  };
+
+  // =========================
+  // Initial Data Load
+  // =========================
+
   useEffect(() => {
     fetchExpenses();
+    fetchBudget();
   }, []);
 
   // =========================
@@ -381,6 +420,59 @@ function Dashboard({ onViewAll }) {
     )
     .slice(0, 5);
 
+  // =========================
+  // Budget Calculations
+  // =========================
+
+  const budgetPercentage =
+    monthlyBudget > 0
+      ? (monthlyExpenses / monthlyBudget) * 100
+      : 0;
+
+  const safeBudgetPercentage = Math.min(
+    budgetPercentage,
+    100
+  );
+
+  const remainingBudget =
+    monthlyBudget - monthlyExpenses;
+
+  const budgetExceeded = monthlyExpenses > monthlyBudget;
+
+  // =========================
+  // Save Monthly Budget
+  // =========================
+
+  const handleBudgetSave = async () => {
+    const newBudget = Number(budgetInput);
+
+    if (!newBudget || newBudget <= 0) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.put(
+        `http://localhost:8081/api/budget?amount=${newBudget}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const savedAmount = Number(response.data.amount);
+
+      setMonthlyBudget(savedAmount);
+      setBudgetInput(savedAmount);
+      setShowBudgetInput(false);
+    } catch (error) {
+      console.error("Unable to save budget:", error);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-100">
 
@@ -389,7 +481,9 @@ function Dashboard({ onViewAll }) {
       ========================= */}
 
       <nav className="bg-white border-b border-slate-200">
+
         <div className="max-w-7xl mx-auto px-6 py-4">
+
           <div className="flex items-center justify-between">
 
             <div className="flex items-center gap-3">
@@ -399,6 +493,7 @@ function Dashboard({ onViewAll }) {
               </div>
 
               <div>
+
                 <h1 className="font-bold text-slate-900 text-lg">
                   Expense Manager
                 </h1>
@@ -406,6 +501,7 @@ function Dashboard({ onViewAll }) {
                 <p className="text-xs text-slate-500">
                   Financial Dashboard
                 </p>
+
               </div>
 
             </div>
@@ -418,7 +514,9 @@ function Dashboard({ onViewAll }) {
             </button>
 
           </div>
+
         </div>
+
       </nav>
 
       {/* =========================
@@ -432,6 +530,7 @@ function Dashboard({ onViewAll }) {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
           <div>
+
             <h2 className="text-3xl font-bold text-slate-900">
               Dashboard
             </h2>
@@ -439,6 +538,7 @@ function Dashboard({ onViewAll }) {
             <p className="text-slate-500 mt-1">
               Here's an overview of your spending.
             </p>
+
           </div>
 
           <button
@@ -453,6 +553,7 @@ function Dashboard({ onViewAll }) {
         {/* Error */}
 
         {error && (
+
           <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center justify-between">
 
             <span>{error}</span>
@@ -465,6 +566,7 @@ function Dashboard({ onViewAll }) {
             </button>
 
           </div>
+
         )}
 
         {/* =========================
@@ -480,6 +582,7 @@ function Dashboard({ onViewAll }) {
             <div className="flex items-start justify-between">
 
               <div>
+
                 <p className="text-sm font-medium text-slate-500">
                   Total Expenses
                 </p>
@@ -489,6 +592,7 @@ function Dashboard({ onViewAll }) {
                     ? "Loading..."
                     : formatCurrency(totalExpenses)}
                 </h3>
+
               </div>
 
               <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold">
@@ -510,6 +614,7 @@ function Dashboard({ onViewAll }) {
             <div className="flex items-start justify-between">
 
               <div>
+
                 <p className="text-sm font-medium text-slate-500">
                   This Month
                 </p>
@@ -519,6 +624,7 @@ function Dashboard({ onViewAll }) {
                     ? "Loading..."
                     : formatCurrency(monthlyExpenses)}
                 </h3>
+
               </div>
 
               <div className="w-10 h-10 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
@@ -540,6 +646,7 @@ function Dashboard({ onViewAll }) {
             <div className="flex items-start justify-between">
 
               <div>
+
                 <p className="text-sm font-medium text-slate-500">
                   Transactions
                 </p>
@@ -547,6 +654,7 @@ function Dashboard({ onViewAll }) {
                 <h3 className="text-2xl font-bold text-slate-900 mt-3">
                   {loading ? "..." : expenses.length}
                 </h3>
+
               </div>
 
               <div className="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center font-bold">
@@ -568,6 +676,7 @@ function Dashboard({ onViewAll }) {
             <div className="flex items-start justify-between">
 
               <div>
+
                 <p className="text-sm font-medium text-slate-500">
                   Average Expense
                 </p>
@@ -577,6 +686,7 @@ function Dashboard({ onViewAll }) {
                     ? "Loading..."
                     : formatCurrency(averageExpense)}
                 </h3>
+
               </div>
 
               <div className="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
@@ -594,12 +704,182 @@ function Dashboard({ onViewAll }) {
         </div>
 
         {/* =========================
+            MONTHLY BUDGET
+        ========================= */}
+
+        <div className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+
+            <div>
+
+              <h3 className="text-lg font-bold text-slate-900">
+                Monthly Budget
+              </h3>
+
+              <p className="text-sm text-slate-500 mt-1">
+                Set a spending limit for the current month
+              </p>
+
+            </div>
+
+            {!showBudgetInput && (
+
+              <button
+                onClick={() => {
+                  setBudgetInput(monthlyBudget);
+                  setShowBudgetInput(true);
+                }}
+                className="px-4 py-2 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-sm font-semibold transition"
+              >
+                Edit Budget
+              </button>
+
+            )}
+
+          </div>
+
+          {showBudgetInput ? (
+
+            <div className="mt-5 flex flex-col sm:flex-row gap-3">
+
+              <div className="relative flex-1">
+
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">
+                  ₹
+                </span>
+
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  value={budgetInput}
+                  onChange={(e) =>
+                    setBudgetInput(e.target.value)
+                  }
+                  className="w-full pl-9 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  placeholder="Enter monthly budget"
+                />
+
+              </div>
+
+              <button
+                onClick={handleBudgetSave}
+                className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition"
+              >
+                Save Budget
+              </button>
+
+              <button
+                onClick={() => setShowBudgetInput(false)}
+                className="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 font-semibold text-sm transition"
+              >
+                Cancel
+              </button>
+
+            </div>
+
+          ) : (
+
+            <>
+
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mt-6">
+
+                <div>
+
+                  <p className="text-sm text-slate-500">
+                    Spent this month
+                  </p>
+
+                  <h4 className="text-3xl font-bold text-slate-900 mt-1">
+                    {formatCurrency(monthlyExpenses)}
+                  </h4>
+
+                </div>
+
+                <div className="sm:text-right">
+
+                  <p className="text-sm text-slate-500">
+                    Monthly limit
+                  </p>
+
+                  <p className="text-lg font-bold text-slate-800 mt-1">
+                    {formatCurrency(monthlyBudget)}
+                  </p>
+
+                </div>
+
+              </div>
+
+              {/* Progress Bar */}
+
+              <div className="mt-5">
+
+                <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
+
+                  <div
+                    className={`h-full rounded-full transition-all duration-500 ${
+                      budgetExceeded
+                        ? "bg-red-500"
+                        : budgetPercentage >= 80
+                        ? "bg-orange-500"
+                        : "bg-blue-600"
+                    }`}
+                    style={{
+                      width: `${safeBudgetPercentage}%`,
+                    }}
+                  ></div>
+
+                </div>
+
+                <div className="flex items-center justify-between mt-2">
+
+                  <p
+                    className={`text-sm font-semibold ${
+                      budgetExceeded
+                        ? "text-red-600"
+                        : budgetPercentage >= 80
+                        ? "text-orange-600"
+                        : "text-blue-600"
+                    }`}
+                  >
+                    {budgetPercentage.toFixed(1)}% used
+                  </p>
+
+                  <p
+                    className={`text-sm font-semibold ${
+                      budgetExceeded
+                        ? "text-red-600"
+                        : "text-slate-500"
+                    }`}
+                  >
+                    {budgetExceeded
+                      ? `${formatCurrency(
+                          Math.abs(remainingBudget)
+                        )} over budget`
+                      : `${formatCurrency(
+                          remainingBudget
+                        )} remaining`}
+                  </p>
+
+                </div>
+
+              </div>
+
+            </>
+
+          )}
+
+        </div>
+
+        {/* =========================
             SPENDING BY CATEGORY
         ========================= */}
 
         <div className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
 
           <div className="mb-4">
+
             <h3 className="text-lg font-bold text-slate-900">
               Spending by Category
             </h3>
@@ -607,13 +887,18 @@ function Dashboard({ onViewAll }) {
             <p className="text-sm text-slate-500 mt-1">
               See where your money is being spent
             </p>
+
           </div>
 
           <div className="w-full h-80">
 
             {categoryData.length > 0 ? (
 
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
+
                 <PieChart>
 
                   <Pie
@@ -627,12 +912,16 @@ function Dashboard({ onViewAll }) {
                   >
 
                     {categoryData.map((entry, index) => (
+
                       <Cell
                         key={`cell-${index}`}
                         fill={
-                          chartColors[index % chartColors.length]
+                          chartColors[
+                            index % chartColors.length
+                          ]
                         }
                       />
+
                     ))}
 
                   </Pie>
@@ -647,6 +936,7 @@ function Dashboard({ onViewAll }) {
                   <Legend />
 
                 </PieChart>
+
               </ResponsiveContainer>
 
             ) : (
@@ -668,6 +958,7 @@ function Dashboard({ onViewAll }) {
         <div className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
 
           <div className="mb-4">
+
             <h3 className="text-lg font-bold text-slate-900">
               Monthly Expense Analytics
             </h3>
@@ -675,13 +966,18 @@ function Dashboard({ onViewAll }) {
             <p className="text-sm text-slate-500 mt-1">
               Track how your spending changes month by month
             </p>
+
           </div>
 
           <div className="w-full h-80">
 
             {monthlyData.length > 0 ? (
 
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer
+                width="100%"
+                height="100%"
+              >
+
                 <LineChart
                   data={monthlyData}
                   margin={{
@@ -692,7 +988,9 @@ function Dashboard({ onViewAll }) {
                   }}
                 >
 
-                  <CartesianGrid strokeDasharray="3 3" />
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                  />
 
                   <XAxis
                     dataKey="month"
@@ -701,7 +999,9 @@ function Dashboard({ onViewAll }) {
 
                   <YAxis
                     tick={{ fontSize: 12 }}
-                    tickFormatter={(value) => `₹${value}`}
+                    tickFormatter={(value) =>
+                      `₹${value}`
+                    }
                   />
 
                   <Tooltip
@@ -721,6 +1021,7 @@ function Dashboard({ onViewAll }) {
                   />
 
                 </LineChart>
+
               </ResponsiveContainer>
 
             ) : (
@@ -744,6 +1045,7 @@ function Dashboard({ onViewAll }) {
           <div className="flex items-center justify-between p-6 border-b border-slate-100">
 
             <div>
+
               <h3 className="text-lg font-bold text-slate-900">
                 Recent Expenses
               </h3>
@@ -751,6 +1053,7 @@ function Dashboard({ onViewAll }) {
               <p className="text-sm text-slate-500 mt-1">
                 Your latest transactions
               </p>
+
             </div>
 
             <div className="flex items-center gap-4">
@@ -871,7 +1174,9 @@ function Dashboard({ onViewAll }) {
                       <td className="px-6 py-4 text-right">
 
                         <span className="font-bold text-slate-800">
-                          {formatCurrency(expense.amount)}
+                          {formatCurrency(
+                            expense.amount
+                          )}
                         </span>
 
                       </td>
@@ -881,7 +1186,9 @@ function Dashboard({ onViewAll }) {
                         <div className="flex justify-center gap-2">
 
                           <button
-                            onClick={() => openEditExpense(expense)}
+                            onClick={() =>
+                              openEditExpense(expense)
+                            }
                             className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-semibold transition"
                           >
                             Edit
@@ -889,9 +1196,13 @@ function Dashboard({ onViewAll }) {
 
                           <button
                             onClick={() =>
-                              handleDeleteExpense(expense.id)
+                              handleDeleteExpense(
+                                expense.id
+                              )
                             }
-                            disabled={deletingId === expense.id}
+                            disabled={
+                              deletingId === expense.id
+                            }
                             className="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 disabled:bg-slate-100 disabled:text-slate-400 text-xs font-semibold transition"
                           >
                             {deletingId === expense.id
