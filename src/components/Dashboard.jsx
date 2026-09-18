@@ -7,6 +7,11 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
 } from "recharts";
 
 function Dashboard({ onViewAll }) {
@@ -55,6 +60,43 @@ function Dashboard({ onViewAll }) {
       return acc;
     }, {})
   );
+
+  // =========================
+  // Monthly Chart Data
+  // =========================
+
+  const monthlyData = Object.values(
+    expenses.reduce((acc, expense) => {
+      const date = new Date(expense.date);
+
+      const month = date.toLocaleString("en-IN", {
+        month: "short",
+        year: "numeric",
+      });
+
+      const amount = Number(expense.amount) || 0;
+
+      if (!acc[month]) {
+        acc[month] = {
+          month,
+          amount: 0,
+          sortDate: new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            1
+          ),
+        };
+      }
+
+      acc[month].amount += amount;
+
+      return acc;
+    }, {})
+  ).sort((a, b) => a.sortDate - b.sortDate);
+
+  // =========================
+  // Chart Colors
+  // =========================
 
   const chartColors = [
     "#3b82f6",
@@ -605,6 +647,80 @@ function Dashboard({ onViewAll }) {
                   <Legend />
 
                 </PieChart>
+              </ResponsiveContainer>
+
+            ) : (
+
+              <div className="h-full flex items-center justify-center text-gray-500">
+                No expense data available
+              </div>
+
+            )}
+
+          </div>
+
+        </div>
+
+        {/* =========================
+            MONTHLY EXPENSE ANALYTICS
+        ========================= */}
+
+        <div className="mt-8 bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+          <div className="mb-4">
+            <h3 className="text-lg font-bold text-slate-900">
+              Monthly Expense Analytics
+            </h3>
+
+            <p className="text-sm text-slate-500 mt-1">
+              Track how your spending changes month by month
+            </p>
+          </div>
+
+          <div className="w-full h-80">
+
+            {monthlyData.length > 0 ? (
+
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart
+                  data={monthlyData}
+                  margin={{
+                    top: 10,
+                    right: 20,
+                    left: 10,
+                    bottom: 10,
+                  }}
+                >
+
+                  <CartesianGrid strokeDasharray="3 3" />
+
+                  <XAxis
+                    dataKey="month"
+                    tick={{ fontSize: 12 }}
+                  />
+
+                  <YAxis
+                    tick={{ fontSize: 12 }}
+                    tickFormatter={(value) => `₹${value}`}
+                  />
+
+                  <Tooltip
+                    formatter={(value) => [
+                      `₹${Number(value).toFixed(2)}`,
+                      "Expenses",
+                    ]}
+                  />
+
+                  <Line
+                    type="monotone"
+                    dataKey="amount"
+                    stroke="#3b82f6"
+                    strokeWidth={3}
+                    dot={{ r: 5 }}
+                    activeDot={{ r: 7 }}
+                  />
+
+                </LineChart>
               </ResponsiveContainer>
 
             ) : (
