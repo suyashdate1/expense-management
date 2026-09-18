@@ -1,16 +1,80 @@
-# React + Vite
+# Expense Management System
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A secure full-stack Expense Management System built using **Java, Spring Boot, Spring Security, JWT, JPA/Hibernate, MySQL, React, Tailwind CSS, and Recharts**.
 
-Currently, two official plugins are available:
+The application allows users to register, log in securely, and manage their personal expenses through a responsive web dashboard and authenticated REST APIs.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🚀 Features
 
-## React Compiler
+### Authentication & Security
+- User registration
+- Duplicate email validation
+- Input validation
+- BCrypt password hashing
+- JWT-based login authentication
+- Stateless authentication using Spring Security
+- Protected expense APIs
+- User-specific expense access
+- Cross-user expense access protection
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Expense Management
+- Create expenses
+- View personal expenses
+- View expense by ID
+- Update expenses
+- Delete expenses
+- Category-wise expense organization
+- Payment method tracking
+- Search and filtering
+- Date-range filtering
+- Sorting expenses
 
-## Expanding the ESLint configuration
+### Dashboard
+- Total expenses summary
+- Current month expense summary
+- Transaction count
+- Average expense
+- Recent expenses
+- Category-wise spending chart
+- Responsive dashboard UI
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| Java 17 | Backend programming |
+| Spring Boot | Backend framework |
+| Spring Security | Authentication and authorization |
+| JWT | Token-based authentication |
+| Spring Data JPA | Database interaction |
+| Hibernate | ORM |
+| MySQL | Relational database |
+| Maven | Dependency management |
+| React.js | Frontend |
+| Tailwind CSS | UI styling |
+| Recharts | Expense analytics charts |
+| Axios | API communication |
+| Eclipse | Backend development |
+| VS Code | Frontend development |
+| Postman | API testing |
+
+## 🏗️ Project Architecture
+
+The application follows a layered full-stack architecture:
+
+```text
+React Frontend
+      ↓
+Axios REST API Calls
+      ↓
+Spring Boot REST API
+      ↓
+Spring Security + JWT
+      ↓
+Controller Layer
+      ↓
+Service Layer
+      ↓
+Repository Layer
+      ↓
+MySQL Database
