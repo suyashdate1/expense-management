@@ -1,7 +1,9 @@
-import { useState } from "react";
+
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Dashboard from "./components/Dashboard";
 import AllExpenses from "./components/AllExpenses";
+import Summary from "./components/Summary";
 
 function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +16,9 @@ function App() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -23,6 +28,27 @@ function App() {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -54,6 +80,7 @@ function App() {
 
         // Open dashboard
         setIsLoggedIn(true);
+        setCurrentPage("dashboard");
 
         console.log("Login response:", response.data);
       } else {
@@ -68,7 +95,10 @@ function App() {
 
         console.log("Registration response:", response.data);
 
-        setMessage("Account created successfully! Please login.");
+        setMessage(
+          "Account created successfully! Please login."
+        );
+
         setMessageType("success");
 
         // Switch to login
@@ -85,10 +115,13 @@ function App() {
 
       if (error.response) {
         setMessage(
-          error.response.data.message || "Something went wrong."
+          error.response.data.message ||
+            "Something went wrong."
         );
       } else {
-        setMessage("Unable to connect to the backend.");
+        setMessage(
+          "Unable to connect to the backend."
+        );
       }
 
       setMessageType("error");
@@ -97,15 +130,166 @@ function App() {
     }
   };
 
-  // Show dashboard after successful login
-  if (isLoggedIn) {
-  return currentPage === "dashboard" ? (
-    <Dashboard onViewAll={() => setCurrentPage("expenses")} />
-  ) : (
-    <AllExpenses onBack={() => setCurrentPage("dashboard")} />
-  );
-}
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setCurrentPage("dashboard");
+    setMenuOpen(false);
 
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+    });
+  };
+
+  // Logged-in application
+  if (isLoggedIn) {
+    return (
+      <div className="min-h-screen bg-slate-50">
+
+        {/* Single Row Navigation */}
+        <nav className="bg-white border-b border-slate-200 px-6 py-4">
+          <div className="max-w-7xl mx-auto flex items-center justify-between">
+
+            {/* Logo / Brand */}
+            <div className="flex items-center gap-3">
+
+              <div className="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center text-lg font-bold shadow-sm">
+                ₹
+              </div>
+
+              <div>
+                <h1 className="text-lg font-bold text-slate-900">
+                  Expense Manager
+                </h1>
+
+                <p className="text-xs text-slate-400">
+                  Financial Dashboard
+                </p>
+              </div>
+
+            </div>
+
+            {/* Menu */}
+            <div className="relative" ref={menuRef}>
+
+              <button
+                onClick={() => setMenuOpen(!menuOpen)}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                  menuOpen
+                    ? "bg-slate-900 text-white"
+                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                }`}
+              >
+                <span className="text-lg leading-none">
+                  ☰
+                </span>
+
+                <span>
+                  Menu
+                </span>
+
+                <span
+                  className={`text-xs transition-transform ${
+                    menuOpen ? "rotate-180" : ""
+                  }`}
+                >
+                  ▼
+                </span>
+              </button>
+
+              {/* Dropdown */}
+              {menuOpen && (
+                <div className="absolute right-0 mt-3 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50">
+
+                  {/* Dashboard */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage("dashboard");
+                      setMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
+                      currentPage === "dashboard"
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Dashboard
+                  </button>
+
+                  {/* Summary */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage("summary");
+                      setMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
+                      currentPage === "summary"
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    Summary
+                  </button>
+
+                  {/* All Expenses */}
+                  <button
+                    onClick={() => {
+                      setCurrentPage("expenses");
+                      setMenuOpen(false);
+                    }}
+                    className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
+                      currentPage === "expenses"
+                        ? "bg-blue-50 text-blue-600"
+                        : "text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    All Expenses
+                  </button>
+
+                  {/* Divider */}
+                  <div className="border-t border-slate-100 my-2"></div>
+
+                  {/* Logout */}
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                  >
+                    Logout
+                  </button>
+
+                </div>
+              )}
+
+            </div>
+
+          </div>
+        </nav>
+
+        {/* Pages */}
+
+        {currentPage === "dashboard" && (
+          <Dashboard
+            onViewAll={() => setCurrentPage("expenses")}
+          />
+        )}
+
+        {currentPage === "summary" && (
+          <Summary />
+        )}
+
+        {currentPage === "expenses" && (
+          <AllExpenses
+            onBack={() => setCurrentPage("dashboard")}
+          />
+        )}
+
+      </div>
+    );
+  }
+
+  // Login / Register page
   return (
     <div className="min-h-screen bg-slate-950 flex items-center justify-center p-4">
 
@@ -412,3 +596,4 @@ function App() {
 }
 
 export default App;
+

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -361,15 +362,6 @@ function Dashboard({ onViewAll }) {
   };
 
   // =========================
-  // Logout
-  // =========================
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    window.location.reload();
-  };
-
-  // =========================
   // Currency
   // =========================
 
@@ -494,43 +486,6 @@ function Dashboard({ onViewAll }) {
 
   return (
     <div className="min-h-screen bg-slate-100">
-
-      {/* =========================
-          NAVBAR
-      ========================= */}
-
-      <nav className="bg-white border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-11 h-11 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold shadow-sm">
-                ₹
-              </div>
-
-              <div>
-                <h1 className="font-bold text-slate-900 text-lg">
-                  Expense Manager
-                </h1>
-
-                <p className="text-xs text-slate-500">
-                  Financial Dashboard
-                </p>
-              </div>
-
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-600 hover:text-red-600 hover:bg-red-50 transition"
-            >
-              Logout
-            </button>
-
-          </div>
-        </div>
-      </nav>
 
       {/* =========================
           MAIN
@@ -829,8 +784,8 @@ function Dashboard({ onViewAll }) {
                       budgetExceeded
                         ? "bg-red-500"
                         : budgetPercentage >= 80
-                          ? "bg-orange-500"
-                          : "bg-blue-600"
+                        ? "bg-orange-500"
+                        : "bg-blue-600"
                     }`}
                     style={{
                       width: `${safeBudgetPercentage}%`,
@@ -846,8 +801,8 @@ function Dashboard({ onViewAll }) {
                       budgetExceeded
                         ? "text-red-600"
                         : budgetPercentage >= 80
-                          ? "text-orange-600"
-                          : "text-blue-600"
+                        ? "text-orange-600"
+                        : "text-blue-600"
                     }`}
                   >
                     {budgetPercentage.toFixed(1)}% used
@@ -1604,8 +1559,8 @@ function Dashboard({ onViewAll }) {
                   {saving
                     ? "Saving..."
                     : editingExpense
-                      ? "Update Expense"
-                      : "Save Expense"}
+                    ? "Update Expense"
+                    : "Save Expense"}
                 </button>
 
               </div>
@@ -1623,3 +1578,4 @@ function Dashboard({ onViewAll }) {
 }
 
 export default Dashboard;
+
