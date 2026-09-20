@@ -1,13 +1,6 @@
+
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import {
-  PieChart,
-  Pie,
-  Cell,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
 
 function AllExpenses({ onBack }) {
   const [expenses, setExpenses] = useState([]);
@@ -399,54 +392,9 @@ function AllExpenses({ onBack }) {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100">
+    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 transition-colors duration-300">
 
-      {/* =========================
-          NAVBAR
-      ========================= */}
-
-      <nav className="bg-white border-b border-slate-200">
-
-        <div className="max-w-7xl mx-auto px-6 py-4">
-
-          <div className="flex items-center justify-between">
-
-            <div className="flex items-center gap-3">
-
-              <div className="w-11 h-11 bg-blue-600 rounded-xl flex items-center justify-center text-white text-xl font-bold">
-                ₹
-              </div>
-
-              <div>
-
-                <h1 className="font-bold text-slate-900 text-lg">
-                  Expense Manager
-                </h1>
-
-                <p className="text-xs text-slate-500">
-                  All Expenses
-                </p>
-
-              </div>
-
-            </div>
-
-            <button
-              onClick={onBack}
-              className="px-4 py-2 rounded-lg text-sm font-semibold text-blue-600 hover:bg-blue-50 transition"
-            >
-              ← Dashboard
-            </button>
-
-          </div>
-
-        </div>
-
-      </nav>
-
-      {/* =========================
-          MAIN
-      ========================= */}
+      {/* MAIN */}
 
       <main className="max-w-7xl mx-auto px-6 py-8">
 
@@ -454,11 +402,11 @@ function AllExpenses({ onBack }) {
 
         <div className="mb-8">
 
-          <h2 className="text-3xl font-bold text-slate-900">
+          <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
             All Expenses
           </h2>
 
-          <p className="text-slate-500 mt-1">
+          <p className="text-slate-500 dark:text-slate-400 mt-1">
             Search, filter and manage all your transactions.
           </p>
 
@@ -468,13 +416,13 @@ function AllExpenses({ onBack }) {
 
         {error && (
 
-          <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center justify-between">
+          <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-sm flex items-center justify-between">
 
             <span>{error}</span>
 
             <button
               onClick={() => setError("")}
-              className="font-bold text-red-500 hover:text-red-700"
+              className="font-bold text-red-500 hover:text-red-700 dark:hover:text-red-300"
             >
               ×
             </button>
@@ -483,43 +431,41 @@ function AllExpenses({ onBack }) {
 
         )}
 
-        {/* =========================
-            SUMMARY
-        ========================= */}
+        {/* SUMMARY */}
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-6">
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
 
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Total Records
             </p>
 
-            <p className="text-2xl font-bold text-slate-900 mt-2">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
               {expenses.length}
             </p>
 
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
 
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Filtered Records
             </p>
 
-            <p className="text-2xl font-bold text-slate-900 mt-2">
+            <p className="text-2xl font-bold text-slate-900 dark:text-white mt-2">
               {filteredExpenses.length}
             </p>
 
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm">
 
-            <p className="text-sm text-slate-500">
+            <p className="text-sm text-slate-500 dark:text-slate-400">
               Filtered Amount
             </p>
 
-            <p className="text-2xl font-bold text-blue-600 mt-2">
+            <p className="text-2xl font-bold text-blue-600 dark:text-blue-400 mt-2">
               {formatCurrency(totalFilteredAmount)}
             </p>
 
@@ -527,13 +473,9 @@ function AllExpenses({ onBack }) {
 
         </div>
 
-        {/* =========================
-            FILTERS
-        ========================= */}
+        {/* FILTERS */}
 
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm mb-6">
-
-          {/* Main filters */}
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-5 shadow-sm mb-6">
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
@@ -541,7 +483,7 @@ function AllExpenses({ onBack }) {
 
             <div className="lg:col-span-2">
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Search
               </label>
 
@@ -552,7 +494,7 @@ function AllExpenses({ onBack }) {
                   setSearch(e.target.value)
                 }
                 placeholder="Search title, description or category..."
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
 
             </div>
@@ -561,7 +503,7 @@ function AllExpenses({ onBack }) {
 
             <div>
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Category
               </label>
 
@@ -570,15 +512,13 @@ function AllExpenses({ onBack }) {
                 onChange={(e) =>
                   setCategory(e.target.value)
                 }
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               >
-
                 {categories.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>
                 ))}
-
               </select>
 
             </div>
@@ -587,7 +527,7 @@ function AllExpenses({ onBack }) {
 
             <div>
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Payment Method
               </label>
 
@@ -596,22 +536,20 @@ function AllExpenses({ onBack }) {
                 onChange={(e) =>
                   setPaymentMethod(e.target.value)
                 }
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               >
-
                 {paymentMethods.map((item) => (
                   <option key={item} value={item}>
                     {item}
                   </option>
                 ))}
-
               </select>
 
             </div>
 
           </div>
 
-          {/* Date + Sort filters */}
+          {/* Date + Sort */}
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mt-4">
 
@@ -619,7 +557,7 @@ function AllExpenses({ onBack }) {
 
             <div>
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 Sort By
               </label>
 
@@ -628,9 +566,8 @@ function AllExpenses({ onBack }) {
                 onChange={(e) =>
                   setSortOrder(e.target.value)
                 }
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               >
-
                 <option value="newest">
                   Newest First
                 </option>
@@ -646,7 +583,6 @@ function AllExpenses({ onBack }) {
                 <option value="low">
                   Lowest Amount
                 </option>
-
               </select>
 
             </div>
@@ -655,7 +591,7 @@ function AllExpenses({ onBack }) {
 
             <div>
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 From Date
               </label>
 
@@ -665,7 +601,7 @@ function AllExpenses({ onBack }) {
                 onChange={(e) =>
                   setFromDate(e.target.value)
                 }
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
 
             </div>
@@ -674,7 +610,7 @@ function AllExpenses({ onBack }) {
 
             <div>
 
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                 To Date
               </label>
 
@@ -684,7 +620,7 @@ function AllExpenses({ onBack }) {
                 onChange={(e) =>
                   setToDate(e.target.value)
                 }
-                className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
               />
 
             </div>
@@ -695,7 +631,7 @@ function AllExpenses({ onBack }) {
 
               <button
                 onClick={clearFilters}
-                className="w-full px-5 py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition"
+                className="w-full px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition"
               >
                 Clear Filters
               </button>
@@ -719,19 +655,17 @@ function AllExpenses({ onBack }) {
 
         </div>
 
-        {/* =========================
-            EXPENSE TABLE
-        ========================= */}
+        {/* EXPENSE TABLE */}
 
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
 
-          <div className="p-6 border-b border-slate-100">
+          <div className="p-6 border-b border-slate-100 dark:border-slate-800">
 
-            <h3 className="text-lg font-bold text-slate-900">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">
               Transactions
             </h3>
 
-            <p className="text-sm text-slate-500 mt-1">
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               {filteredExpenses.length} transaction
               {filteredExpenses.length !== 1
                 ? "s"
@@ -743,7 +677,7 @@ function AllExpenses({ onBack }) {
 
           {loading ? (
 
-            <div className="py-20 text-center text-slate-500">
+            <div className="py-20 text-center text-slate-500 dark:text-slate-400">
               Loading expenses...
             </div>
 
@@ -751,15 +685,15 @@ function AllExpenses({ onBack }) {
 
             <div className="py-20 text-center px-6">
 
-              <div className="w-16 h-16 mx-auto bg-slate-100 rounded-2xl flex items-center justify-center text-2xl">
+              <div className="w-16 h-16 mx-auto bg-slate-100 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-2xl text-slate-600 dark:text-slate-300">
                 ₹
               </div>
 
-              <h4 className="font-semibold text-slate-800 mt-4">
+              <h4 className="font-semibold text-slate-800 dark:text-white mt-4">
                 No expenses found
               </h4>
 
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                 Try changing your search or filters.
               </p>
 
@@ -778,31 +712,31 @@ function AllExpenses({ onBack }) {
 
               <table className="w-full">
 
-                <thead className="bg-slate-50">
+                <thead className="bg-slate-50 dark:bg-slate-800/70">
 
                   <tr>
 
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Expense
                     </th>
 
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Category
                     </th>
 
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Payment
                     </th>
 
-                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <th className="text-left px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Date
                     </th>
 
-                    <th className="text-right px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <th className="text-right px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Amount
                     </th>
 
-                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Action
                     </th>
 
@@ -816,16 +750,16 @@ function AllExpenses({ onBack }) {
 
                     <tr
                       key={expense.id}
-                      className="border-t border-slate-100 hover:bg-slate-50 transition"
+                      className="border-t border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition"
                     >
 
                       <td className="px-6 py-4">
 
-                        <p className="font-semibold text-slate-800 text-sm">
+                        <p className="font-semibold text-slate-800 dark:text-white text-sm">
                           {expense.title}
                         </p>
 
-                        <p className="text-xs text-slate-400 mt-1 max-w-xs truncate">
+                        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1 max-w-xs truncate">
                           {expense.description}
                         </p>
 
@@ -833,23 +767,23 @@ function AllExpenses({ onBack }) {
 
                       <td className="px-6 py-4">
 
-                        <span className="inline-flex px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold">
+                        <span className="inline-flex px-3 py-1 rounded-full bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-400 text-xs font-semibold">
                           {expense.category}
                         </span>
 
                       </td>
 
-                      <td className="px-6 py-4 text-sm text-slate-500">
+                      <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                         {expense.paymentMethod}
                       </td>
 
-                      <td className="px-6 py-4 text-sm text-slate-500">
+                      <td className="px-6 py-4 text-sm text-slate-500 dark:text-slate-400">
                         {expense.date}
                       </td>
 
                       <td className="px-6 py-4 text-right">
 
-                        <span className="font-bold text-slate-800">
+                        <span className="font-bold text-slate-800 dark:text-white">
                           {formatCurrency(expense.amount)}
                         </span>
 
@@ -865,7 +799,7 @@ function AllExpenses({ onBack }) {
                             onClick={() =>
                               openEditModal(expense)
                             }
-                            className="px-3 py-1.5 rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-semibold transition"
+                            className="px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-xs font-semibold transition"
                           >
                             Edit
                           </button>
@@ -879,7 +813,7 @@ function AllExpenses({ onBack }) {
                             disabled={
                               deletingId === expense.id
                             }
-                            className="px-3 py-1.5 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 disabled:bg-slate-100 disabled:text-slate-400 text-xs font-semibold transition"
+                            className="px-3 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 disabled:bg-slate-100 dark:disabled:bg-slate-800 disabled:text-slate-400 text-xs font-semibold transition"
                           >
                             {deletingId === expense.id
                               ? "Deleting..."
@@ -906,27 +840,25 @@ function AllExpenses({ onBack }) {
 
       </main>
 
-      {/* =========================
-          EDIT MODAL
-      ========================= */}
+      {/* EDIT MODAL */}
 
       {showEditModal && (
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 dark:bg-black/70 backdrop-blur-sm">
 
-          <div className="w-full max-w-2xl bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
 
             {/* Modal Header */}
 
-            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200">
+            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800">
 
               <div>
 
-                <h2 className="text-xl font-bold text-slate-900">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
                   Edit Expense
                 </h2>
 
-                <p className="text-sm text-slate-500 mt-1">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                   Update your transaction details
                 </p>
 
@@ -935,7 +867,7 @@ function AllExpenses({ onBack }) {
               <button
                 type="button"
                 onClick={closeEditModal}
-                className="w-9 h-9 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center text-lg transition"
+                className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-lg transition"
               >
                 ×
               </button>
@@ -955,7 +887,7 @@ function AllExpenses({ onBack }) {
 
                 <div>
 
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Expense Title
                   </label>
 
@@ -966,20 +898,20 @@ function AllExpenses({ onBack }) {
                     onChange={handleFormChange}
                     placeholder="e.g. Grocery shopping"
                     required
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                   />
 
                 </div>
 
                 <div>
 
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Amount
                   </label>
 
                   <div className="relative">
 
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">
+                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-semibold">
                       ₹
                     </span>
 
@@ -992,7 +924,7 @@ function AllExpenses({ onBack }) {
                       min="0.01"
                       step="0.01"
                       required
-                      className="w-full pl-9 pr-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                      className="w-full pl-9 pr-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                     />
 
                   </div>
@@ -1007,7 +939,7 @@ function AllExpenses({ onBack }) {
 
                 <div>
 
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Category
                   </label>
 
@@ -1016,7 +948,7 @@ function AllExpenses({ onBack }) {
                     value={expenseForm.category}
                     onChange={handleFormChange}
                     required
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                   >
 
                     <option value="">
@@ -1061,7 +993,7 @@ function AllExpenses({ onBack }) {
 
                 <div>
 
-                  <label className="block text-sm font-semibold text-slate-700 mb-2">
+                  <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                     Date
                   </label>
 
@@ -1071,7 +1003,7 @@ function AllExpenses({ onBack }) {
                     value={expenseForm.date}
                     onChange={handleFormChange}
                     required
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                   />
 
                 </div>
@@ -1082,7 +1014,7 @@ function AllExpenses({ onBack }) {
 
               <div>
 
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Payment Method
                 </label>
 
@@ -1091,7 +1023,7 @@ function AllExpenses({ onBack }) {
                   value={expenseForm.paymentMethod}
                   onChange={handleFormChange}
                   required
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 >
 
                   <option value="">
@@ -1130,7 +1062,7 @@ function AllExpenses({ onBack }) {
 
               <div>
 
-                <label className="block text-sm font-semibold text-slate-700 mb-2">
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Description
                 </label>
 
@@ -1141,7 +1073,7 @@ function AllExpenses({ onBack }) {
                   placeholder="Add some details about this expense..."
                   rows="3"
                   required
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl bg-slate-50 outline-none resize-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full px-4 py-3 border border-slate-200 dark:border-slate-700 rounded-xl bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 outline-none resize-none focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
               </div>
@@ -1153,8 +1085,8 @@ function AllExpenses({ onBack }) {
                 <div
                   className={`p-3 rounded-xl text-sm text-center font-medium ${
                     formMessageType === "success"
-                      ? "bg-green-50 text-green-700 border border-green-100"
-                      : "bg-red-50 text-red-700 border border-red-100"
+                      ? "bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-300 border border-green-100 dark:border-green-900"
+                      : "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-100 dark:border-red-900"
                   }`}
                 >
                   {formMessage}
@@ -1170,7 +1102,7 @@ function AllExpenses({ onBack }) {
                   type="button"
                   onClick={closeEditModal}
                   disabled={saving}
-                  className="px-5 py-3 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 disabled:opacity-50 transition"
+                  className="px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition"
                 >
                   Cancel
                 </button>
@@ -1200,3 +1132,4 @@ function AllExpenses({ onBack }) {
 }
 
 export default AllExpenses;
+

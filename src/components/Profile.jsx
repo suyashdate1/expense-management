@@ -254,11 +254,11 @@ function Profile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex items-center justify-center transition-colors">
         <div className="text-center">
-          <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
+          <div className="w-10 h-10 border-4 border-blue-200 dark:border-slate-700 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
 
-          <p className="text-slate-500 mt-4">
+          <p className="text-slate-500 dark:text-slate-400 mt-4">
             Loading profile...
           </p>
         </div>
@@ -267,22 +267,22 @@ function Profile() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 p-6 transition-colors">
       <div className="max-w-4xl mx-auto">
 
         {/* Page Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900">
+          <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
             Profile & Account
           </h1>
 
-          <p className="text-slate-500 mt-2">
+          <p className="text-slate-500 dark:text-slate-400 mt-2">
             Manage your personal information and account settings.
           </p>
         </div>
 
         {/* Profile Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
 
           {/* Profile Header */}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-10">
@@ -328,11 +328,11 @@ function Profile() {
             <div className="flex items-center justify-between mb-6">
 
               <div>
-                <h3 className="text-lg font-semibold text-slate-900">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                   Account Information
                 </h3>
 
-                <p className="text-sm text-slate-500 mt-1">
+                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                   Update your personal information.
                 </p>
               </div>
@@ -357,7 +357,7 @@ function Profile() {
               {/* Full Name */}
               <div>
 
-                <label className="block text-sm font-medium text-slate-500 mb-2">
+                <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">
                   Full Name
                 </label>
 
@@ -367,10 +367,10 @@ function Profile() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                   />
                 ) : (
-                  <div className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900">
+                  <div className="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
                     {profile?.name || "Not available"}
                   </div>
                 )}
@@ -380,7 +380,7 @@ function Profile() {
               {/* Email */}
               <div>
 
-                <label className="block text-sm font-medium text-slate-500 mb-2">
+                <label className="block text-sm font-medium text-slate-500 dark:text-slate-400 mb-2">
                   Email Address
                 </label>
 
@@ -390,10 +390,10 @@ function Profile() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                   />
                 ) : (
-                  <div className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200 text-slate-900">
+                  <div className="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white">
                     {profile?.email || "Not available"}
                   </div>
                 )}
@@ -409,7 +409,7 @@ function Profile() {
                 <button
                   onClick={handleCancel}
                   disabled={saving}
-                  className="px-5 py-2.5 rounded-xl border border-slate-200 text-slate-700 font-semibold text-sm hover:bg-slate-50 transition disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 transition disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -430,8 +430,8 @@ function Profile() {
               <div
                 className={`mt-6 p-4 rounded-xl text-sm font-medium ${
                   messageType === "success"
-                    ? "bg-green-50 text-green-700 border border-green-100"
-                    : "bg-red-50 text-red-700 border border-red-100"
+                    ? "bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-900"
+                    : "bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900"
                 }`}
               >
                 {message}
@@ -443,52 +443,52 @@ function Profile() {
         </div>
 
         {/* Security Card */}
-        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-8 mt-6">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-8 mt-6 transition-colors">
 
-          <h3 className="text-lg font-semibold text-slate-900">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
             Security
           </h3>
 
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Manage your password and account security.
           </p>
 
           {/* JWT Authentication */}
-          <div className="mt-6 flex items-center justify-between p-4 rounded-xl bg-green-50 border border-green-100">
+          <div className="mt-6 flex items-center justify-between p-4 rounded-xl bg-green-50 dark:bg-green-950/30 border border-green-100 dark:border-green-900">
 
             <div className="flex items-center gap-3">
 
-              <div className="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/50 text-green-600 dark:text-green-400 flex items-center justify-center font-bold">
                 ✓
               </div>
 
               <div>
-                <p className="font-semibold text-slate-900">
+                <p className="font-semibold text-slate-900 dark:text-white">
                   JWT Authentication
                 </p>
 
-                <p className="text-xs text-slate-500 mt-1">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   Your session is securely authenticated.
                 </p>
               </div>
 
             </div>
 
-            <span className="text-sm font-semibold text-green-600">
+            <span className="text-sm font-semibold text-green-600 dark:text-green-400">
               Active
             </span>
 
           </div>
 
           {/* Change Password */}
-          <div className="mt-8 pt-8 border-t border-slate-200">
+          <div className="mt-8 pt-8 border-t border-slate-200 dark:border-slate-800">
 
             <div className="mb-5">
-              <h4 className="text-base font-semibold text-slate-900">
+              <h4 className="text-base font-semibold text-slate-900 dark:text-white">
                 Change Password
               </h4>
 
-              <p className="text-sm text-slate-500 mt-1">
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                 Update your account password securely.
               </p>
             </div>
@@ -501,7 +501,7 @@ function Profile() {
               {/* Current Password */}
               <div>
 
-                <label className="block text-sm font-medium text-slate-600 mb-2">
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">
                   Current Password
                 </label>
 
@@ -511,7 +511,7 @@ function Profile() {
                   value={passwordData.currentPassword}
                   onChange={handlePasswordChangeInput}
                   placeholder="Enter current password"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
               </div>
@@ -519,7 +519,7 @@ function Profile() {
               {/* New Password */}
               <div>
 
-                <label className="block text-sm font-medium text-slate-600 mb-2">
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">
                   New Password
                 </label>
 
@@ -529,7 +529,7 @@ function Profile() {
                   value={passwordData.newPassword}
                   onChange={handlePasswordChangeInput}
                   placeholder="Enter new password"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
               </div>
@@ -537,7 +537,7 @@ function Profile() {
               {/* Confirm Password */}
               <div>
 
-                <label className="block text-sm font-medium text-slate-600 mb-2">
+                <label className="block text-sm font-medium text-slate-600 dark:text-slate-300 mb-2">
                   Confirm New Password
                 </label>
 
@@ -547,21 +547,21 @@ function Profile() {
                   value={passwordData.confirmPassword}
                   onChange={handlePasswordChangeInput}
                   placeholder="Confirm new password"
-                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-white text-slate-900 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
                 />
 
               </div>
 
               {/* Error */}
               {passwordError && (
-                <div className="p-4 rounded-xl text-sm font-medium bg-red-50 text-red-700 border border-red-100">
+                <div className="p-4 rounded-xl text-sm font-medium bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-400 border border-red-100 dark:border-red-900">
                   {passwordError}
                 </div>
               )}
 
               {/* Success */}
               {passwordMessage && (
-                <div className="p-4 rounded-xl text-sm font-medium bg-green-50 text-green-700 border border-green-100">
+                <div className="p-4 rounded-xl text-sm font-medium bg-green-50 dark:bg-green-950/40 text-green-700 dark:text-green-400 border border-green-100 dark:border-green-900">
                   {passwordMessage}
                 </div>
               )}
@@ -572,7 +572,7 @@ function Profile() {
                 <button
                   type="submit"
                   disabled={changingPassword}
-                  className="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm transition disabled:bg-slate-400"
+                  className="px-6 py-3 rounded-xl bg-slate-900 dark:bg-blue-600 hover:bg-slate-800 dark:hover:bg-blue-700 text-white font-semibold text-sm transition disabled:bg-slate-400"
                 >
                   {changingPassword
                     ? "Changing Password..."

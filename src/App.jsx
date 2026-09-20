@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Dashboard from "./components/Dashboard";
@@ -19,6 +18,10 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("darkMode") === "true";
+  });
+
   const menuRef = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -29,6 +32,17 @@ function App() {
 
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
+
+  // Apply dark mode
+  useEffect(() => {
+    if (darkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+
+    localStorage.setItem("darkMode", darkMode);
+  }, [darkMode]);
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -148,10 +162,11 @@ function App() {
   // Logged-in application
   if (isLoggedIn) {
     return (
-      <div className="min-h-screen bg-slate-50">
+      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
 
         {/* Single Row Navigation */}
-        <nav className="bg-white border-b border-slate-200 px-6 py-4">
+        <nav className="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-6 py-4 transition-colors duration-300">
+
           <div className="max-w-7xl mx-auto flex items-center justify-between">
 
             {/* Logo / Brand */}
@@ -162,31 +177,89 @@ function App() {
               </div>
 
               <div>
-                <h1 className="text-lg font-bold text-slate-900">
+                <h1 className="text-lg font-bold text-slate-900 dark:text-white">
                   Expense Manager
                 </h1>
 
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-400 dark:text-slate-500">
                   Financial Dashboard
                 </p>
               </div>
 
             </div>
 
-            {/* Right Side - Menu + Profile */}
+            {/* Right Side */}
             <div className="flex items-center gap-3">
 
+              {/* Dark Mode Button */}
+              <button
+                onClick={() => setDarkMode(!darkMode)}
+                title={
+                  darkMode
+                    ? "Switch to light mode"
+                    : "Switch to dark mode"
+                }
+                className="w-11 h-11 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-yellow-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all"
+              >
+                {darkMode ? (
+                  /* Sun Icon */
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="w-5 h-5"
+                  >
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="4"
+                    />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                  </svg>
+                ) : (
+                  /* Moon Icon */
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      d="M21 12.79A9 9 0 1 1 11.21 3
+                      7 7 0 0 0 21 12.79z"
+                    />
+                  </svg>
+                )}
+              </button>
+
               {/* Menu */}
-              <div className="relative" ref={menuRef}>
+              <div
+                className="relative"
+                ref={menuRef}
+              >
 
                 <button
-                  onClick={() => setMenuOpen(!menuOpen)}
+                  onClick={() =>
+                    setMenuOpen(!menuOpen)
+                  }
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
                     menuOpen
-                      ? "bg-slate-900 text-white"
-                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                      ? "bg-slate-900 dark:bg-white text-white dark:text-slate-900"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
+
                   <span className="text-lg leading-none">
                     ☰
                   </span>
@@ -197,16 +270,19 @@ function App() {
 
                   <span
                     className={`text-xs transition-transform ${
-                      menuOpen ? "rotate-180" : ""
+                      menuOpen
+                        ? "rotate-180"
+                        : ""
                     }`}
                   >
                     ▼
                   </span>
+
                 </button>
 
                 {/* Dropdown */}
                 {menuOpen && (
-                  <div className="absolute right-0 mt-3 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50">
+                  <div className="absolute right-0 mt-3 w-52 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-xl py-2 z-50">
 
                     {/* Dashboard */}
                     <button
@@ -216,8 +292,8 @@ function App() {
                       }}
                       className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
                         currentPage === "dashboard"
-                          ? "bg-blue-50 text-blue-600"
-                          : "text-slate-700 hover:bg-slate-50"
+                          ? "bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400"
+                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                     >
                       Dashboard
@@ -231,8 +307,8 @@ function App() {
                       }}
                       className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
                         currentPage === "summary"
-                          ? "bg-blue-50 text-blue-600"
-                          : "text-slate-700 hover:bg-slate-50"
+                          ? "bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400"
+                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                     >
                       Summary
@@ -246,20 +322,20 @@ function App() {
                       }}
                       className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
                         currentPage === "expenses"
-                          ? "bg-blue-50 text-blue-600"
-                          : "text-slate-700 hover:bg-slate-50"
+                          ? "bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400"
+                          : "text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800"
                       }`}
                     >
                       All Expenses
                     </button>
 
                     {/* Divider */}
-                    <div className="border-t border-slate-100 my-2"></div>
+                    <div className="border-t border-slate-100 dark:border-slate-800 my-2"></div>
 
                     {/* Logout */}
                     <button
                       onClick={handleLogout}
-                      className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                      className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition"
                     >
                       Logout
                     </button>
@@ -279,9 +355,10 @@ function App() {
                 className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
                   currentPage === "profile"
                     ? "bg-blue-600 text-white"
-                    : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700"
                 }`}
               >
+
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -294,18 +371,22 @@ function App() {
                     clipRule="evenodd"
                   />
                 </svg>
+
               </button>
 
             </div>
 
           </div>
+
         </nav>
 
         {/* Pages */}
 
         {currentPage === "dashboard" && (
           <Dashboard
-            onViewAll={() => setCurrentPage("expenses")}
+            onViewAll={() =>
+              setCurrentPage("expenses")
+            }
           />
         )}
 
@@ -315,7 +396,9 @@ function App() {
 
         {currentPage === "expenses" && (
           <AllExpenses
-            onBack={() => setCurrentPage("dashboard")}
+            onBack={() =>
+              setCurrentPage("dashboard")
+            }
           />
         )}
 
@@ -372,6 +455,7 @@ function App() {
 
               <h2 className="text-4xl lg:text-5xl font-bold leading-tight mb-6">
                 Manage your expenses.
+
                 <span className="block text-blue-100">
                   Simplify your life.
                 </span>
@@ -389,6 +473,7 @@ function App() {
             <div className="mt-10 space-y-4">
 
               <div className="flex items-center gap-3">
+
                 <div className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
                   ✓
                 </div>
@@ -396,9 +481,11 @@ function App() {
                 <span className="text-sm text-blue-50">
                   Secure JWT authentication
                 </span>
+
               </div>
 
               <div className="flex items-center gap-3">
+
                 <div className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
                   ✓
                 </div>
@@ -406,9 +493,11 @@ function App() {
                 <span className="text-sm text-blue-50">
                   Track and manage expenses
                 </span>
+
               </div>
 
               <div className="flex items-center gap-3">
+
                 <div className="w-7 h-7 rounded-full bg-white/15 flex items-center justify-center">
                   ✓
                 </div>
@@ -416,6 +505,7 @@ function App() {
                 <span className="text-sm text-blue-50">
                   Personal and secure data
                 </span>
+
               </div>
 
             </div>
@@ -500,7 +590,10 @@ function App() {
             </div>
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-5"
+            >
 
               {/* Full Name */}
               {!isLogin && (
@@ -552,7 +645,11 @@ function App() {
                 <div className="relative">
 
                   <input
-                    type={showPassword ? "text" : "password"}
+                    type={
+                      showPassword
+                        ? "text"
+                        : "password"
+                    }
                     name="password"
                     placeholder="Enter your password"
                     value={formData.password}
@@ -564,11 +661,15 @@ function App() {
                   <button
                     type="button"
                     onClick={() =>
-                      setShowPassword(!showPassword)
+                      setShowPassword(
+                        !showPassword
+                      )
                     }
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-xs font-semibold text-blue-600 hover:text-blue-700"
                   >
-                    {showPassword ? "Hide" : "Show"}
+                    {showPassword
+                      ? "Hide"
+                      : "Show"}
                   </button>
 
                 </div>
@@ -618,7 +719,9 @@ function App() {
                 }}
                 className="font-semibold text-blue-600 hover:text-blue-700"
               >
-                {isLogin ? "Create one" : "Sign in"}
+                {isLogin
+                  ? "Create one"
+                  : "Sign in"}
               </button>
 
             </p>
@@ -634,4 +737,3 @@ function App() {
 }
 
 export default App;
-
