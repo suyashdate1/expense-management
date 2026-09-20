@@ -421,7 +421,7 @@ function Dashboard({ onViewAll }) {
     .slice(0, 5);
 
   // =========================
-  // Budget Calculations
+  // Budget vs Actual Calculations
   // =========================
 
   const budgetPercentage =
@@ -437,7 +437,8 @@ function Dashboard({ onViewAll }) {
   const remainingBudget =
     monthlyBudget - monthlyExpenses;
 
-  const budgetExceeded = monthlyExpenses > monthlyBudget;
+  const budgetExceeded =
+    monthlyExpenses > monthlyBudget;
 
   // =========================
   // Save Monthly Budget
@@ -822,8 +823,8 @@ function Dashboard({ onViewAll }) {
                       budgetExceeded
                         ? "bg-red-500"
                         : budgetPercentage >= 80
-                        ? "bg-orange-500"
-                        : "bg-blue-600"
+                          ? "bg-orange-500"
+                          : "bg-blue-600"
                     }`}
                     style={{
                       width: `${safeBudgetPercentage}%`,
@@ -839,8 +840,8 @@ function Dashboard({ onViewAll }) {
                       budgetExceeded
                         ? "text-red-600"
                         : budgetPercentage >= 80
-                        ? "text-orange-600"
-                        : "text-blue-600"
+                          ? "text-orange-600"
+                          : "text-blue-600"
                     }`}
                   >
                     {budgetPercentage.toFixed(1)}% used
@@ -869,6 +870,98 @@ function Dashboard({ onViewAll }) {
             </>
 
           )}
+
+        </div>
+
+        {/* =========================
+            BUDGET VS ACTUAL SPENDING
+        ========================= */}
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+
+          {/* Budget */}
+
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+            <p className="text-sm font-medium text-slate-500">
+              Monthly Budget
+            </p>
+
+            <h3 className="text-2xl font-bold text-slate-900 mt-2">
+              {formatCurrency(monthlyBudget)}
+            </h3>
+
+            <p className="text-xs text-slate-400 mt-2">
+              Your spending limit
+            </p>
+
+          </div>
+
+          {/* Actual Spending */}
+
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+            <p className="text-sm font-medium text-slate-500">
+              Actual Spending
+            </p>
+
+            <h3 className="text-2xl font-bold text-slate-900 mt-2">
+              {formatCurrency(monthlyExpenses)}
+            </h3>
+
+            <p className="text-xs text-slate-400 mt-2">
+              Spent during the current month
+            </p>
+
+          </div>
+
+          {/* Remaining */}
+
+          <div
+            className={`rounded-2xl border shadow-sm p-6 ${
+              budgetExceeded
+                ? "bg-red-50 border-red-200"
+                : "bg-white border-slate-200"
+            }`}
+          >
+
+            <p
+              className={`text-sm font-medium ${
+                budgetExceeded
+                  ? "text-red-600"
+                  : "text-slate-500"
+              }`}
+            >
+              {budgetExceeded
+                ? "Budget Exceeded"
+                : "Remaining Budget"}
+            </p>
+
+            <h3
+              className={`text-2xl font-bold mt-2 ${
+                budgetExceeded
+                  ? "text-red-700"
+                  : "text-slate-900"
+              }`}
+            >
+              {formatCurrency(
+                Math.abs(remainingBudget)
+              )}
+            </h3>
+
+            <p
+              className={`text-xs mt-2 ${
+                budgetExceeded
+                  ? "text-red-500"
+                  : "text-slate-400"
+              }`}
+            >
+              {budgetExceeded
+                ? "Amount spent above your budget"
+                : "Available for the rest of the month"}
+            </p>
+
+          </div>
 
         </div>
 
@@ -1481,8 +1574,8 @@ function Dashboard({ onViewAll }) {
                   {saving
                     ? "Saving..."
                     : editingExpense
-                    ? "Update Expense"
-                    : "Save Expense"}
+                      ? "Update Expense"
+                      : "Save Expense"}
                 </button>
 
               </div>
