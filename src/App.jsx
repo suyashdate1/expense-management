@@ -4,6 +4,7 @@ import axios from "axios";
 import Dashboard from "./components/Dashboard";
 import AllExpenses from "./components/AllExpenses";
 import Summary from "./components/Summary";
+import Profile from "./components/Profile";
 
 function App() {
   const [isLogin, setIsLogin] = useState(true);
@@ -132,6 +133,7 @@ function App() {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+
     setIsLoggedIn(false);
     setCurrentPage("dashboard");
     setMenuOpen(false);
@@ -171,96 +173,128 @@ function App() {
 
             </div>
 
-            {/* Menu */}
-            <div className="relative" ref={menuRef}>
+            {/* Right Side - Menu + Profile */}
+            <div className="flex items-center gap-3">
 
+              {/* Menu */}
+              <div className="relative" ref={menuRef}>
+
+                <button
+                  onClick={() => setMenuOpen(!menuOpen)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+                    menuOpen
+                      ? "bg-slate-900 text-white"
+                      : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+                  }`}
+                >
+                  <span className="text-lg leading-none">
+                    ☰
+                  </span>
+
+                  <span>
+                    Menu
+                  </span>
+
+                  <span
+                    className={`text-xs transition-transform ${
+                      menuOpen ? "rotate-180" : ""
+                    }`}
+                  >
+                    ▼
+                  </span>
+                </button>
+
+                {/* Dropdown */}
+                {menuOpen && (
+                  <div className="absolute right-0 mt-3 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50">
+
+                    {/* Dashboard */}
+                    <button
+                      onClick={() => {
+                        setCurrentPage("dashboard");
+                        setMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
+                        currentPage === "dashboard"
+                          ? "bg-blue-50 text-blue-600"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      Dashboard
+                    </button>
+
+                    {/* Summary */}
+                    <button
+                      onClick={() => {
+                        setCurrentPage("summary");
+                        setMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
+                        currentPage === "summary"
+                          ? "bg-blue-50 text-blue-600"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      Summary
+                    </button>
+
+                    {/* All Expenses */}
+                    <button
+                      onClick={() => {
+                        setCurrentPage("expenses");
+                        setMenuOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
+                        currentPage === "expenses"
+                          ? "bg-blue-50 text-blue-600"
+                          : "text-slate-700 hover:bg-slate-50"
+                      }`}
+                    >
+                      All Expenses
+                    </button>
+
+                    {/* Divider */}
+                    <div className="border-t border-slate-100 my-2"></div>
+
+                    {/* Logout */}
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
+                    >
+                      Logout
+                    </button>
+
+                  </div>
+                )}
+
+              </div>
+
+              {/* Profile Button */}
               <button
-                onClick={() => setMenuOpen(!menuOpen)}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold transition-all ${
-                  menuOpen
-                    ? "bg-slate-900 text-white"
+                onClick={() => {
+                  setCurrentPage("profile");
+                  setMenuOpen(false);
+                }}
+                title="Profile"
+                className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+                  currentPage === "profile"
+                    ? "bg-blue-600 text-white"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
-                <span className="text-lg leading-none">
-                  ☰
-                </span>
-
-                <span>
-                  Menu
-                </span>
-
-                <span
-                  className={`text-xs transition-transform ${
-                    menuOpen ? "rotate-180" : ""
-                  }`}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-6 h-6"
                 >
-                  ▼
-                </span>
+                  <path
+                    fillRule="evenodd"
+                    d="M12 2a5 5 0 1 0 0 10A5 5 0 0 0 12 2ZM4 21a8 8 0 1 1 16 0H4Z"
+                    clipRule="evenodd"
+                  />
+                </svg>
               </button>
-
-              {/* Dropdown */}
-              {menuOpen && (
-                <div className="absolute right-0 mt-3 w-52 bg-white rounded-2xl border border-slate-200 shadow-xl py-2 z-50">
-
-                  {/* Dashboard */}
-                  <button
-                    onClick={() => {
-                      setCurrentPage("dashboard");
-                      setMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
-                      currentPage === "dashboard"
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-slate-700 hover:bg-slate-50"
-                    }`}
-                  >
-                    Dashboard
-                  </button>
-
-                  {/* Summary */}
-                  <button
-                    onClick={() => {
-                      setCurrentPage("summary");
-                      setMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
-                      currentPage === "summary"
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-slate-700 hover:bg-slate-50"
-                    }`}
-                  >
-                    Summary
-                  </button>
-
-                  {/* All Expenses */}
-                  <button
-                    onClick={() => {
-                      setCurrentPage("expenses");
-                      setMenuOpen(false);
-                    }}
-                    className={`w-full text-left px-4 py-3 text-sm font-medium transition ${
-                      currentPage === "expenses"
-                        ? "bg-blue-50 text-blue-600"
-                        : "text-slate-700 hover:bg-slate-50"
-                    }`}
-                  >
-                    All Expenses
-                  </button>
-
-                  {/* Divider */}
-                  <div className="border-t border-slate-100 my-2"></div>
-
-                  {/* Logout */}
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-3 text-sm font-semibold text-red-600 hover:bg-red-50 transition"
-                  >
-                    Logout
-                  </button>
-
-                </div>
-              )}
 
             </div>
 
@@ -283,6 +317,10 @@ function App() {
           <AllExpenses
             onBack={() => setCurrentPage("dashboard")}
           />
+        )}
+
+        {currentPage === "profile" && (
+          <Profile />
         )}
 
       </div>
