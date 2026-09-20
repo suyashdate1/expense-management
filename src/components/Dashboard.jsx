@@ -407,6 +407,24 @@ function Dashboard({ onViewAll }) {
       0
     );
 
+  // =========================
+  // Average Monthly Spending
+  // =========================
+
+  const averageMonthlySpending =
+    expenses.length > 0
+      ? totalExpenses /
+        Math.max(
+          new Set(
+            expenses.map((expense) => {
+              const date = new Date(expense.date);
+              return `${date.getFullYear()}-${date.getMonth()}`;
+            })
+          ).size,
+          1
+        )
+      : 0;
+
   const averageExpense =
     expenses.length > 0
       ? totalExpenses / expenses.length
@@ -482,9 +500,7 @@ function Dashboard({ onViewAll }) {
       ========================= */}
 
       <nav className="bg-white border-b border-slate-200">
-
         <div className="max-w-7xl mx-auto px-6 py-4">
-
           <div className="flex items-center justify-between">
 
             <div className="flex items-center gap-3">
@@ -494,7 +510,6 @@ function Dashboard({ onViewAll }) {
               </div>
 
               <div>
-
                 <h1 className="font-bold text-slate-900 text-lg">
                   Expense Manager
                 </h1>
@@ -502,7 +517,6 @@ function Dashboard({ onViewAll }) {
                 <p className="text-xs text-slate-500">
                   Financial Dashboard
                 </p>
-
               </div>
 
             </div>
@@ -515,9 +529,7 @@ function Dashboard({ onViewAll }) {
             </button>
 
           </div>
-
         </div>
-
       </nav>
 
       {/* =========================
@@ -531,7 +543,6 @@ function Dashboard({ onViewAll }) {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
 
           <div>
-
             <h2 className="text-3xl font-bold text-slate-900">
               Dashboard
             </h2>
@@ -539,7 +550,6 @@ function Dashboard({ onViewAll }) {
             <p className="text-slate-500 mt-1">
               Here's an overview of your spending.
             </p>
-
           </div>
 
           <button
@@ -554,7 +564,6 @@ function Dashboard({ onViewAll }) {
         {/* Error */}
 
         {error && (
-
           <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-700 text-sm flex items-center justify-between">
 
             <span>{error}</span>
@@ -567,7 +576,6 @@ function Dashboard({ onViewAll }) {
             </button>
 
           </div>
-
         )}
 
         {/* =========================
@@ -725,7 +733,6 @@ function Dashboard({ onViewAll }) {
             </div>
 
             {!showBudgetInput && (
-
               <button
                 onClick={() => {
                   setBudgetInput(monthlyBudget);
@@ -735,7 +742,6 @@ function Dashboard({ onViewAll }) {
               >
                 Edit Budget
               </button>
-
             )}
 
           </div>
@@ -959,6 +965,30 @@ function Dashboard({ onViewAll }) {
               {budgetExceeded
                 ? "Amount spent above your budget"
                 : "Available for the rest of the month"}
+            </p>
+
+          </div>
+
+        </div>
+
+        {/* =========================
+            AVERAGE MONTHLY SPENDING
+        ========================= */}
+
+        <div className="mt-6">
+
+          <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+
+            <p className="text-sm font-medium text-slate-500">
+              Average Monthly Spending
+            </p>
+
+            <h3 className="text-2xl font-bold text-slate-900 mt-2">
+              {formatCurrency(averageMonthlySpending)}
+            </h3>
+
+            <p className="text-xs text-slate-400 mt-2">
+              Based on your recorded expenses
             </p>
 
           </div>
