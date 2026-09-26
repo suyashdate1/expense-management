@@ -18,6 +18,10 @@ function AllExpenses({ onBack }) {
   const [error, setError] = useState("");
   const [deletingId, setDeletingId] = useState(null);
 
+  // Receipt states
+  const [uploadingReceiptId, setUploadingReceiptId] = useState(null);
+  const [receiptMessage, setReceiptMessage] = useState("");
+
   // Edit modal states
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingExpense, setEditingExpense] = useState(null);
@@ -85,6 +89,199 @@ function AllExpenses({ onBack }) {
   useEffect(() => {
     fetchExpenses();
   }, []);
+
+  // =========================
+  // Receipt Upload
+  // =========================
+
+  const handleReceiptUpload = async (expenseId, file) => {
+    if (!file) {
+      return;
+    }
+
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      setReceiptMessage(
+        "Only JPG, PNG and WEBP images are allowed."
+      );
+      return;
+    }
+
+    try {
+      setUploadingReceiptId(expenseId);
+      setReceiptMessage("");
+
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      await axios.post(
+        `http://localhost:8081/api/receipts/expense/${expenseId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setReceiptMessage(
+        "Receipt uploaded successfully!"
+      );
+
+      setTimeout(() => {
+        setReceiptMessage("");
+      }, 2500);
+    } catch (error) {
+      console.error(error);
+
+      if (error.response?.status === 403) {
+        setReceiptMessage(
+          "You are not allowed to upload a receipt for this expense."
+        );
+      } else {
+        setReceiptMessage(
+          error.response?.data?.message ||
+            "Unable to upload receipt."
+        );
+      }
+    } finally {
+      setUploadingReceiptId(null);
+    }
+  };
+
+  // =========================
+  // View Receipt
+  // =========================
+
+  const handleViewReceipt = async (expenseId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        `http://localhost:8081/api/receipts/expense/${expenseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob",
+        }
+      );
+
+      const receiptUrl = URL.createObjectURL(
+        response.data
+      );
+
+      window.open(receiptUrl, "_blank");
+
+      setTimeout(() => {
+        URL.revokeObjectURL(receiptUrl);
+      }, 10000);
+    } catch (error) {
+      console.error(error);
+      setReceiptMessage(
+        "Receipt not found for this expense."
+      );
+
+      setTimeout(() => {
+        setReceiptMessage("");
+      }, 2500);
+    }
+  };
+
+  // =========================
+  // Download Receipt
+  // =========================
+
+  const handleDownloadReceipt = async (expenseId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get(
+        `http://localhost:8081/api/receipts/expense/${expenseId}/download`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: "blob",
+        }
+      );
+
+      const blobUrl = URL.createObjectURL(
+        response.data
+      );
+
+      const link = document.createElement("a");
+      link.href = blobUrl;
+      link.download = `receipt-${expenseId}`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error(error);
+
+      setReceiptMessage(
+        "Unable to download receipt."
+      );
+
+      setTimeout(() => {
+        setReceiptMessage("");
+      }, 2500);
+    }
+  };
+
+  // =========================
+  // Delete Receipt
+  // =========================
+
+  const handleDeleteReceipt = async (expenseId) => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this receipt?"
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(
+        `http://localhost:8081/api/receipts/expense/${expenseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setReceiptMessage(
+        "Receipt deleted successfully!"
+      );
+
+      setTimeout(() => {
+        setReceiptMessage("");
+      }, 2500);
+    } catch (error) {
+      console.error(error);
+
+      setReceiptMessage(
+        "Unable to delete receipt."
+      );
+
+      setTimeout(() => {
+        setReceiptMessage("");
+      }, 2500);
+    }
+  };
 
   // =========================
   // Delete Expense
@@ -207,7 +404,9 @@ function AllExpenses({ onBack }) {
         )
       );
 
-      setFormMessage("Expense updated successfully!");
+      setFormMessage(
+        "Expense updated successfully!"
+      );
       setFormMessageType("success");
 
       setTimeout(() => {
@@ -346,11 +545,12 @@ function AllExpenses({ onBack }) {
   // Total Filtered Amount
   // =========================
 
-  const totalFilteredAmount = filteredExpenses.reduce(
-    (total, expense) =>
-      total + Number(expense.amount),
-    0
-  );
+  const totalFilteredAmount =
+    filteredExpenses.reduce(
+      (total, expense) =>
+        total + Number(expense.amount),
+      0
+    );
 
   // =========================
   // Filter Options
@@ -411,6 +611,14 @@ function AllExpenses({ onBack }) {
           </p>
 
         </div>
+
+        {/* Receipt Message */}
+
+        {receiptMessage && (
+          <div className="mb-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 text-blue-700 dark:text-blue-300 text-sm">
+            {receiptMessage}
+          </div>
+        )}
 
         {/* Error */}
 
@@ -737,6 +945,10 @@ function AllExpenses({ onBack }) {
                     </th>
 
                     <th className="text-center px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
+                      Receipt
+                    </th>
+
+                    <th className="text-center px-6 py-4 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       Action
                     </th>
 
@@ -788,6 +1000,87 @@ function AllExpenses({ onBack }) {
                         </span>
 
                       </td>
+
+                      {/* Receipt */}
+
+                      <td className="px-6 py-4">
+
+                        <div className="flex flex-col items-center gap-2">
+
+                          <label className="cursor-pointer px-3 py-1.5 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/60 text-xs font-semibold transition">
+
+                            {uploadingReceiptId === expense.id
+                              ? "Uploading..."
+                              : "🧾 Upload"}
+
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp"
+                              className="hidden"
+                              disabled={
+                                uploadingReceiptId ===
+                                expense.id
+                              }
+                              onChange={(e) => {
+                                const file =
+                                  e.target.files?.[0];
+
+                                handleReceiptUpload(
+                                  expense.id,
+                                  file
+                                );
+
+                                e.target.value = "";
+                              }}
+                            />
+
+                          </label>
+
+                          <div className="flex gap-1">
+
+                            <button
+                              onClick={() =>
+                                handleViewReceipt(
+                                  expense.id
+                                )
+                              }
+                              className="px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition"
+                              title="View receipt"
+                            >
+                              👁
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                handleDownloadReceipt(
+                                  expense.id
+                                )
+                              }
+                              className="px-2.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition"
+                              title="Download receipt"
+                            >
+                              ↓
+                            </button>
+
+                            <button
+                              onClick={() =>
+                                handleDeleteReceipt(
+                                  expense.id
+                                )
+                              }
+                              className="px-2.5 py-1.5 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 text-xs font-semibold transition"
+                              title="Delete receipt"
+                            >
+                              🗑
+                            </button>
+
+                          </div>
+
+                        </div>
+
+                      </td>
+
+                      {/* Actions */}
 
                       <td className="px-6 py-4">
 

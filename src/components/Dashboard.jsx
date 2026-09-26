@@ -493,25 +493,25 @@ function Dashboard({ onViewAll }) {
           MAIN
       ========================= */}
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
 
         {/* Header */}
 
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 sm:mb-8">
 
           <div>
-            <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white">
               Dashboard
             </h2>
 
-            <p className="text-slate-500 dark:text-slate-400 mt-1">
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-1">
               Here's an overview of your spending.
             </p>
           </div>
 
           <button
             onClick={openAddExpense}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/20 transition"
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl font-semibold text-sm shadow-lg shadow-blue-600/20 transition"
           >
             + Add Expense
           </button>
@@ -521,13 +521,13 @@ function Dashboard({ onViewAll }) {
         {/* Error */}
 
         {error && (
-          <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-sm flex items-center justify-between">
+          <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 text-red-700 dark:text-red-300 text-sm flex items-start gap-3 justify-between">
 
             <span>{error}</span>
 
             <button
               onClick={() => setError("")}
-              className="font-bold text-red-500 hover:text-red-700 dark:hover:text-red-300"
+              className="font-bold text-red-500 hover:text-red-700 dark:hover:text-red-300 shrink-0"
             >
               ×
             </button>
@@ -539,21 +539,21 @@ function Dashboard({ onViewAll }) {
             SUMMARY CARDS
         ========================= */}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
 
           {/* Total */}
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
 
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-3">
 
-              <div>
+              <div className="min-w-0">
 
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                   Total Expenses
                 </p>
 
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-3 break-words">
                   {loading
                     ? "Loading..."
                     : formatCurrency(totalExpenses)}
@@ -561,7 +561,7 @@ function Dashboard({ onViewAll }) {
 
               </div>
 
-              <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 shrink-0 rounded-xl bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
                 ₹
               </div>
 
@@ -575,17 +575,17 @@ function Dashboard({ onViewAll }) {
 
           {/* Monthly */}
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
 
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-3">
 
-              <div>
+              <div className="min-w-0">
 
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                   This Month
                 </p>
 
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-3 break-words">
                   {loading
                     ? "Loading..."
                     : formatCurrency(monthlyExpenses)}
@@ -593,7 +593,7 @@ function Dashboard({ onViewAll }) {
 
               </div>
 
-              <div className="w-10 h-10 rounded-xl bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400 flex items-center justify-center">
+              <div className="w-10 h-10 shrink-0 rounded-xl bg-green-50 dark:bg-green-950/50 text-green-600 dark:text-green-400 flex items-center justify-center">
                 ↗
               </div>
 
@@ -607,9 +607,9 @@ function Dashboard({ onViewAll }) {
 
           {/* Transactions */}
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
 
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-3">
 
               <div>
 
@@ -617,13 +617,13 @@ function Dashboard({ onViewAll }) {
                   Transactions
                 </p>
 
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-3">
                   {loading ? "..." : expenses.length}
                 </h3>
 
               </div>
 
-              <div className="w-10 h-10 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
+              <div className="w-10 h-10 shrink-0 rounded-xl bg-purple-50 dark:bg-purple-950/50 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
                 #
               </div>
 
@@ -637,17 +637,17 @@ function Dashboard({ onViewAll }) {
 
           {/* Average */}
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
 
-            <div className="flex items-start justify-between">
+            <div className="flex items-start justify-between gap-3">
 
-              <div>
+              <div className="min-w-0">
 
                 <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                   Average Expense
                 </p>
 
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mt-3">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white mt-3 break-words">
                   {loading
                     ? "Loading..."
                     : formatCurrency(averageExpense)}
@@ -655,7 +655,7 @@ function Dashboard({ onViewAll }) {
 
               </div>
 
-              <div className="w-10 h-10 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 flex items-center justify-center">
+              <div className="w-10 h-10 shrink-0 rounded-xl bg-orange-50 dark:bg-orange-950/50 text-orange-600 dark:text-orange-400 flex items-center justify-center">
                 ≈
               </div>
 
@@ -673,12 +673,11 @@ function Dashboard({ onViewAll }) {
             MONTHLY BUDGET
         ========================= */}
 
-        <div className="mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 transition-colors">
+        <div className="mt-6 sm:mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6 transition-colors">
 
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
             <div>
-
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 Monthly Budget
               </h3>
@@ -686,7 +685,6 @@ function Dashboard({ onViewAll }) {
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                 Set a spending limit for the current month
               </p>
-
             </div>
 
             {!showBudgetInput && (
@@ -695,7 +693,7 @@ function Dashboard({ onViewAll }) {
                   setBudgetInput(monthlyBudget);
                   setShowBudgetInput(true);
                 }}
-                className="px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-sm font-semibold transition"
+                className="w-full sm:w-auto px-4 py-2 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-sm font-semibold transition"
               >
                 Edit Budget
               </button>
@@ -727,19 +725,23 @@ function Dashboard({ onViewAll }) {
 
               </div>
 
-              <button
-                onClick={handleBudgetSave}
-                className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition"
-              >
-                Save Budget
-              </button>
+              <div className="grid grid-cols-2 sm:flex gap-3">
 
-              <button
-                onClick={() => setShowBudgetInput(false)}
-                className="px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold text-sm transition"
-              >
-                Cancel
-              </button>
+                <button
+                  onClick={handleBudgetSave}
+                  className="px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm transition"
+                >
+                  Save Budget
+                </button>
+
+                <button
+                  onClick={() => setShowBudgetInput(false)}
+                  className="px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 font-semibold text-sm transition"
+                >
+                  Cancel
+                </button>
+
+              </div>
 
             </div>
 
@@ -755,7 +757,7 @@ function Dashboard({ onViewAll }) {
                     Spent this month
                   </p>
 
-                  <h4 className="text-3xl font-bold text-slate-900 dark:text-white mt-1">
+                  <h4 className="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">
                     {formatCurrency(monthlyExpenses)}
                   </h4>
 
@@ -777,7 +779,7 @@ function Dashboard({ onViewAll }) {
 
               <div className="mt-5">
 
-                <div className="w-full h-4 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div className="w-full h-3 sm:h-4 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
 
                   <div
                     className={`h-full rounded-full transition-all duration-500 ${
@@ -794,7 +796,7 @@ function Dashboard({ onViewAll }) {
 
                 </div>
 
-                <div className="flex items-center justify-between mt-2">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mt-2">
 
                   <p
                     className={`text-sm font-semibold ${
@@ -809,7 +811,7 @@ function Dashboard({ onViewAll }) {
                   </p>
 
                   <p
-                    className={`text-sm font-semibold ${
+                    className={`text-sm font-semibold sm:text-right ${
                       budgetExceeded
                         ? "text-red-600 dark:text-red-400"
                         : "text-slate-500 dark:text-slate-400"
@@ -838,9 +840,9 @@ function Dashboard({ onViewAll }) {
             BUDGET VS ACTUAL
         ========================= */}
 
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-5">
+        <div className="mt-5 sm:mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6">
 
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Monthly Budget
@@ -856,7 +858,7 @@ function Dashboard({ onViewAll }) {
 
           </div>
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6">
 
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Actual Spending
@@ -873,7 +875,7 @@ function Dashboard({ onViewAll }) {
           </div>
 
           <div
-            className={`rounded-2xl border shadow-sm p-6 ${
+            className={`rounded-2xl border shadow-sm p-5 sm:p-6 ${
               budgetExceeded
                 ? "bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-900"
                 : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800"
@@ -924,9 +926,9 @@ function Dashboard({ onViewAll }) {
             AVERAGE MONTHLY SPENDING
         ========================= */}
 
-        <div className="mt-6">
+        <div className="mt-5 sm:mt-6">
 
-          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5 sm:p-6">
 
             <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
               Average Monthly Spending
@@ -948,7 +950,7 @@ function Dashboard({ onViewAll }) {
             SPENDING BY CATEGORY
         ========================= */}
 
-        <div className="mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+        <div className="mt-6 sm:mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 sm:p-6">
 
           <div className="mb-4">
 
@@ -962,7 +964,7 @@ function Dashboard({ onViewAll }) {
 
           </div>
 
-          <div className="w-full h-80">
+          <div className="w-full h-72 sm:h-80">
 
             {categoryData.length > 0 ? (
 
@@ -979,7 +981,7 @@ function Dashboard({ onViewAll }) {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={110}
+                    outerRadius="65%"
                     label
                   >
 
@@ -1013,7 +1015,7 @@ function Dashboard({ onViewAll }) {
 
             ) : (
 
-              <div className="h-full flex items-center justify-center text-slate-500 dark:text-slate-400">
+              <div className="h-full flex items-center justify-center text-slate-500 dark:text-slate-400 text-sm">
                 No expense data available
               </div>
 
@@ -1027,7 +1029,7 @@ function Dashboard({ onViewAll }) {
             MONTHLY EXPENSE ANALYTICS
         ========================= */}
 
-        <div className="mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6">
+        <div className="mt-6 sm:mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 sm:p-6">
 
           <div className="mb-4">
 
@@ -1041,7 +1043,7 @@ function Dashboard({ onViewAll }) {
 
           </div>
 
-          <div className="w-full h-80">
+          <div className="w-full h-72 sm:h-80">
 
             {monthlyData.length > 0 ? (
 
@@ -1054,8 +1056,8 @@ function Dashboard({ onViewAll }) {
                   data={monthlyData}
                   margin={{
                     top: 10,
-                    right: 20,
-                    left: 10,
+                    right: 10,
+                    left: 0,
                     bottom: 10,
                   }}
                 >
@@ -1066,14 +1068,16 @@ function Dashboard({ onViewAll }) {
 
                   <XAxis
                     dataKey="month"
-                    tick={{ fontSize: 12 }}
+                    tick={{ fontSize: 11 }}
+                    interval="preserveStartEnd"
                   />
 
                   <YAxis
-                    tick={{ fontSize: 12 }}
+                    tick={{ fontSize: 11 }}
                     tickFormatter={(value) =>
                       `₹${value}`
                     }
+                    width={55}
                   />
 
                   <Tooltip
@@ -1088,8 +1092,8 @@ function Dashboard({ onViewAll }) {
                     dataKey="amount"
                     stroke="#3b82f6"
                     strokeWidth={3}
-                    dot={{ r: 5 }}
-                    activeDot={{ r: 7 }}
+                    dot={{ r: 4 }}
+                    activeDot={{ r: 6 }}
                   />
 
                 </LineChart>
@@ -1098,7 +1102,7 @@ function Dashboard({ onViewAll }) {
 
             ) : (
 
-              <div className="h-full flex items-center justify-center text-slate-500 dark:text-slate-400">
+              <div className="h-full flex items-center justify-center text-slate-500 dark:text-slate-400 text-sm">
                 No expense data available
               </div>
 
@@ -1112,9 +1116,9 @@ function Dashboard({ onViewAll }) {
             EXPENSE TABLE
         ========================= */}
 
-        <div className="mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div className="mt-6 sm:mt-8 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
 
-          <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-5 sm:p-6 border-b border-slate-100 dark:border-slate-800">
 
             <div>
 
@@ -1128,7 +1132,7 @@ function Dashboard({ onViewAll }) {
 
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center justify-between sm:justify-end gap-4">
 
               <button
                 onClick={onViewAll}
@@ -1180,7 +1184,7 @@ function Dashboard({ onViewAll }) {
 
             <div className="overflow-x-auto">
 
-              <table className="w-full">
+              <table className="w-full min-w-[720px]">
 
                 <thead className="bg-slate-50 dark:bg-slate-800/70">
 
@@ -1308,23 +1312,23 @@ function Dashboard({ onViewAll }) {
 
       {showExpenseModal && (
 
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/50 backdrop-blur-sm">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/50 backdrop-blur-sm">
 
-          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+          <div className="w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-h-[94vh] sm:max-h-[90vh] overflow-y-auto">
 
             {/* Modal Header */}
 
-            <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 dark:border-slate-800">
+            <div className="sticky top-0 z-10 bg-white dark:bg-slate-900 flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 border-b border-slate-200 dark:border-slate-800">
 
-              <div>
+              <div className="min-w-0">
 
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white">
+                <h2 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
                   {editingExpense
                     ? "Edit Expense"
                     : "Add New Expense"}
                 </h2>
 
-                <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                   {editingExpense
                     ? "Update your transaction details"
                     : "Record a new transaction"}
@@ -1335,7 +1339,7 @@ function Dashboard({ onViewAll }) {
               <button
                 type="button"
                 onClick={closeModal}
-                className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-lg transition"
+                className="w-9 h-9 shrink-0 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-lg transition"
               >
                 ×
               </button>
@@ -1346,7 +1350,7 @@ function Dashboard({ onViewAll }) {
 
             <form
               onSubmit={handleExpenseSubmit}
-              className="p-6 space-y-5"
+              className="p-5 sm:p-6 space-y-5"
             >
 
               {/* Title + Amount */}
@@ -1540,7 +1544,7 @@ function Dashboard({ onViewAll }) {
                   type="button"
                   onClick={closeModal}
                   disabled={saving}
-                  className="px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition"
+                  className="w-full sm:w-auto px-5 py-3 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-semibold text-sm hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 transition"
                 >
                   Cancel
                 </button>
@@ -1548,7 +1552,7 @@ function Dashboard({ onViewAll }) {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold text-sm transition"
+                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold text-sm transition"
                 >
                   {saving
                     ? "Saving..."
