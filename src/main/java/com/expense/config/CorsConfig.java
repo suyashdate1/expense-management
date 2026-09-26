@@ -17,7 +17,10 @@ public class CorsConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+        		List.of(
+        			    "http://localhost:5174",
+        			    "https://expense-management-92aw4j7gg-suyashdate1s-projects.vercel.app"
+        			)
         );
 
         configuration.setAllowedMethods(
